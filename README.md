@@ -1,2 +1,2 @@
 # Datas
-Uma simples classe PHP para trabalhos com datas
+Uma classe PHP simples para trabalhos com datas
