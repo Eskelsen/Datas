@@ -112,4 +112,31 @@ class Dates
 
         return self::ajustarDiaMes($ano, $mes, $diaOriginal);
     }
+
+    function proximoVencimento(string $dataBase, string $frequencia): string
+    {
+        $map = [
+            'mensal'     => 'P1M',
+            'bimestral'  => 'P2M',
+            'trimestral' => 'P3M',
+            'semestral'  => 'P6M',
+            'anual'      => 'P1Y',
+        ];
+    
+        if (!isset($map[$frequencia])) {
+            throw new InvalidArgumentException('Frequência inválida');
+        }
+    
+        $dt = new DateTime($dataBase);
+        $diaOriginal = (int)$dt->format('d');
+    
+        $dt->add(new DateInterval($map[$frequencia]));
+    
+        // Ajuste: evita pular mês (ex: 31 → vira mês seguinte)
+        if ((int)$dt->format('d') !== $diaOriginal) {
+            $dt->modify('last day of previous month');
+        }
+    
+        return $dt->format('Y-m-d');
+    }
 }
