@@ -2,7 +2,7 @@
 
 use \DateTime as Datetime;
 
-class Dates
+class Datas
 {
     private static array $feriados = [
         '01-01', # Ano Novo
@@ -113,7 +113,7 @@ class Dates
         return self::ajustarDiaMes($ano, $mes, $diaOriginal);
     }
 
-    function proximoVencimento(string $dataBase, string $frequencia): string
+    public static function proximoVencimento(string $dataBase, string $frequencia): string|bool
     {
         $map = [
             'mensal'     => 'P1M',
@@ -124,16 +124,15 @@ class Dates
         ];
     
         if (!isset($map[$frequencia])) {
-            throw new InvalidArgumentException('Frequência inválida');
+            return false;
         }
     
         $dt = new DateTime($dataBase);
-        $diaOriginal = (int)$dt->format('d');
+        $diaOriginal = (int) $dt->format('d');
     
         $dt->add(new DateInterval($map[$frequencia]));
     
-        // Ajuste: evita pular mês (ex: 31 → vira mês seguinte)
-        if ((int)$dt->format('d') !== $diaOriginal) {
+        if ((int) $dt->format('d') !== $diaOriginal) {
             $dt->modify('last day of previous month');
         }
     
