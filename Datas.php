@@ -113,7 +113,7 @@ class Datas
         return self::ajustarDiaMes($ano, $mes, $diaOriginal);
     }
 
-    public static function proximoVencimento(string $dataBase, string $frequencia): string|bool
+    public static function proximoVencimento(string $data_base, string $frequencia, int $dia_vencimento): string|bool
     {
         $map = [
             'mensal'     => 'P1M',
@@ -126,16 +126,25 @@ class Datas
         if (!isset($map[$frequencia])) {
             return false;
         }
-    
-        $dt = new DateTime($dataBase);
-        $diaOriginal = (int) $dt->format('d');
-    
-        $dt->add(new DateInterval($map[$frequencia]));
-    
-        if ((int) $dt->format('d') !== $diaOriginal) {
-            $dt->modify('last day of previous month');
+
+        $dt = new DateTime($data_base);
+
+        $dt->add(new \DateInterval($map[$frequencia]));
+
+        $new_day = (int) $dt->format('d');
+
+        if ($new_day == $dia_vencimento) {
+            return $dt->format('Y-m-d');
         }
-    
-        return $dt->format('Y-m-d');
+
+        ($new_day<=3) ? $dt->modify('last day of previous month') : $dt->modify('last day of this month');
+
+        $new_day = (int) $dt->format('d');
+
+        if ($new_day <= $dia_vencimento) {
+            return $dt->format('Y-m-d');
+        }
+
+        return $dt->format('Y-m') . '-' . $dia_vencimento;
     }
 }
