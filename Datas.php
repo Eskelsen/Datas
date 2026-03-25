@@ -1,5 +1,9 @@
 <?php
 
+namespace app\models;
+
+use Yii;
+
 use \DateTime as Datetime;
 
 class Datas
@@ -93,7 +97,7 @@ class Datas
                 return $proximo;
 
             default:
-                throw new Exception("Regra inválida");
+                throw new \Exception("Regra inválida");
         }
     }
 
@@ -123,13 +127,11 @@ class Datas
             'anual'      => 'P1Y',
         ];
     
-        if (!isset($map[$frequencia])) {
-            return false;
-        }
+        $frequencia = $map[$frequencia] ?? 'P1M';
 
         $dt = new DateTime($data_base);
 
-        $dt->add(new \DateInterval($map[$frequencia]));
+        $dt->add(new \DateInterval($frequencia));
 
         $new_day = (int) $dt->format('d');
 
