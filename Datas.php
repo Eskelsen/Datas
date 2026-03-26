@@ -1,10 +1,7 @@
 <?php
 
-namespace app\models;
-
-use Yii;
-
 use \DateTime as Datetime;
+use \DateInterval as DateInterval;
 
 class Datas
 {
@@ -131,7 +128,7 @@ class Datas
 
         $dt = new DateTime($data_base);
 
-        $dt->add(new \DateInterval($frequencia));
+        $dt->add(new DateInterval($frequencia));
 
         $new_day = (int) $dt->format('d');
 
