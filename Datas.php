@@ -1,15 +1,11 @@
 <?php
 
-use \DateTime as Datetime;
+use \DateTime as DateTime;
 use \DateInterval as DateInterval;
 
 class Datas
 {
-    private static array $feriados = [
-        '01-01', # Ano Novo
-        // ...
-        '12-25', # Natal
-    ];
+    private static $feriados;
 
     public static function ultimoDiaDoMes(int $ano, int $mes): int
     {
@@ -114,7 +110,7 @@ class Datas
         return self::ajustarDiaMes($ano, $mes, $diaOriginal);
     }
 
-    public static function proximoVencimento(string $data_base, string $frequencia, int $dia_vencimento): string|bool
+    public static function proximoVencimento(string $data_base, string $frequencia, int $dia_vencimento): string
     {
         $map = [
             'mensal'     => 'P1M',
